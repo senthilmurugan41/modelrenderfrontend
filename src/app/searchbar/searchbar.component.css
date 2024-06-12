@@ -1,0 +1,26 @@
+/* search-box.component.css */
+
+.search-container {
+  display: flex;
+  align-items: center;
+
+}
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  min-height: 100vh;
+}
+
+input {
+  padding: 8px;
+  font-size: 16px;
+}
+
+button {
+  margin-left: 8px;
+  padding: 8px;
+  font-size: 16px;
+  cursor: pointer;
+}

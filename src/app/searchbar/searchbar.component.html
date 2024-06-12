@@ -1,0 +1,7 @@
+<!-- search-box.component.html -->
+
+<div class="search-container center">
+  <input #box (keyup.enter)= "onEnter(box.value)" type="text" size="50" placeholder="Enter the model to search">
+  <button (click)= "onEnter(box.value)">Search</button>
+</div>
+
