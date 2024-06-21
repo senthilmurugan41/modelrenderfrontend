@@ -1,2 +1,6 @@
+<div class="progress-bar-container" *ngIf="!this.styleFlag">
+  <label for="progress-bar">Loading...</label>
+  <progress id="progress-bar" value= {{this.progressBarValue}} max="100"></progress>
+</div>
 <button type="button" (click)="goToSearch()" style="margin-bottom:10px" class="btn btn-secondary">Return to main menu</button>
 

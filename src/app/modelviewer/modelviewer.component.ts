@@ -7,6 +7,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ObjectModel } from '../model/object-model';
 import { ActivatedRoute, Router } from '@angular/router';
+import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader';
 
 @Component({
   selector: 'app-modelviewer',
@@ -16,9 +17,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class ModelviewerComponent {
 
   flag =true;
+  styleFlag=false;
   query: string | null | undefined;
   scene = new THREE.Scene();
   dataset!: Observable<ObjectModel>;
+  progressBarValue!:string;
   constructor(private http:HttpClient, private route:ActivatedRoute, private router:Router)
   {
     this.flag=true;
@@ -41,7 +44,7 @@ export class ModelviewerComponent {
   {
     var dataset = this.getRelatedComponent();
     this.scene = new THREE.Scene();
-    const fileUrl = new URL('../assets/handModel.glb', import.meta.url);
+    const fileUrl = new URL('../assets/hand.glb', import.meta.url);
 const renderer = new THREE.WebGLRenderer({antialias: true});
 
 renderer.setSize(window.innerWidth, window.innerHeight);
@@ -85,10 +88,19 @@ const options = {
     'Eye dark': 0x020202,
     'Eye white': 0xBEBEBE
 }
+const loadingManager = new THREE.LoadingManager();
+loadingManager.onProgress = (url, loaded, total) =>{
+  this.progressBarValue = ""+(loaded/total)*100;
+}
 
-const assetLoader = new GLTFLoader();
-
-assetLoader.load('../assets/handModel.glb', (gltf) => {
+loadingManager.onLoad = ()=>{
+  this.styleFlag = true;
+}
+const assetLoader = new GLTFLoader(loadingManager);
+const dracoLoader = new DRACOLoader;
+dracoLoader.setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.5.7/');
+assetLoader.setDRACOLoader(dracoLoader);
+assetLoader.load('../assets/handModel2.glb', (gltf) => {
     const model = gltf.scene;
     this.scene.add(model);
     dataset.subscribe(data=>{
@@ -164,7 +176,9 @@ assetLoader.load('../assets/handModel.glb', (gltf) => {
   {
     this.clear();
     console.log("clicking the return to main menu");
-    // this.router.navigate(['/searchbar'],{replaceUrl:true});
     window.location.href= '/searchbar';
   }
 }
+
+
+
